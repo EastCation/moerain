@@ -1,0 +1,196 @@
+<!doctype html>
+        <html>
+        <head>
+        <meta charset="utf-8">
+        <title>开发项目：萌雨社-MoeRain Software Developments</title>
+
+    <!--兼容性/你是我的我是你的谁-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/reset.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/index_style.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/animate.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/news_style.css">
+    <script type="text/javascript" src="statics/starindex/js/jquery.min.js"></script>
+    <script type="text/javascript" src="statics/starindex/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="statics/starindex/js/wow.js"></script>
+    <script src="statics/starindex/src/js/uikit.min.js"></script>
+    <script src="statics/starindex/src/js/components/sticky.js"></script>
+    <script type="text/javascript">
+
+
+        new WOW().init();
+        $(function(){
+            $(".item:eq(0)").addClass("active")
+
+            var itemlength=$(".item").length;
+            console.log(itemlength);
+
+            for(i=0;i<itemlength;i++){
+                ceshi= '<li data-target="#carousel-example-generic" data-slide-to="'+i+'" ></li>'
+//               alert(ceshi)
+                $(".carousel-indicators").append(ceshi);
+            }
+        })
+
+    </script>
+    <style>
+        .release_box .img-responsive{
+            height: 240px !important;
+            margin: 0 auto;
+        }
+    </style>
+    <div class="row">
+        <nav id="menu" class="navbar navbar-default">
+            <div class="navbar-header">
+                <!--我们不能不要这段-->
+                <!--<div class="logo">
+                     <a href="index.html" title="回到主页"><img src="logo.png" class="img-responsive" alt="Responsive image"/>
+                     </a>
+                 </div>-->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav col-md-12 menu">
+                    <!--<li>
+                     <form class="navbar-form navbar-left" role="search" style="padding: 10px 15px">
+     
+                             <div class="form-group" style="width: ">
+                                 <input type="text" class="form-control input-sm" placeholder="搜索萌雨社或者NRLT" id="bdcsMain">
+                             </div>
+                             <button type="submit" class="btn  glyphicon glyphicon-search" style="padding: 4px !important;"></button>
+                         </form>
+                     </li>-->
+                    <li><a href="index.html" title="返回首页">首页</a>
+                        <p>Index</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="https://moerain.cn" title="辉夜星瞳/寒月孤星共同的博客">博客</a>
+                        <p>Blog</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="https://docs.moerain.cn" title="社开源文档">文档</a>
+                        <p>Docs</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="https://www.nuanr-mxi.com" title="由NuanR_Mxi暖日创建的暖日明曦开发组">NRLT</a>
+                        <p>NRLT</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="dev.html" title="列举了社里正在开发的项目">开发项目</a>
+                        <p>Projects</p>
+                        <span class="line line-bottom"></span>
+                    <li>
+                        <a href="chart.html" title="最新、最热、时下流行！">谱面制作组</a>
+                        <p>Starmoe Specifications</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="chart.html" title="你想要的一切都在这里">关于</a>
+                        <p>About</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+            </br>
+            </br>
+    <!--release三格信息-->
+    <div class="container">
+        <div data-wow-delay="0.1s" data-wow-duration="500" class="row wow fadeIn">
+            <div id="releases">
+
+                <div class="release_title">
+                    <img src="/statics/starindex/pictures/star2.png" class="img-responsive star" alt="Responsive image"/><a href="release.shtml" title=""><span>开发项目</span><span style="font-size: 0.5em !important;">Developments</span></a>
+                    <a href="index.php?a=lists&amp;catid=27" class="more" style="font-size:0.9em;float:right;padding-top:20px;" title="">阅读更少&gt;&gt;</a>
+                    <img src="/statics/starindex/pictures/heart_line2.png" class="img-responsive heart_line" style="padding-bottom:10px;" alt="Responsive image"/>
+                </div>
+                <div class="col-md-4 release_box">
+                    <a href="https://www.bilibili.com/video/BV1u9ytY2Exj?vd_source=47b09379c739b93112b1dcb31d048596" title="星雨引擎测试视频"><img src="/statics/starindex/pictures/StaRain-Engine.png" class="img-responsive" alt="Responsive image"/>
+                    </a>
+                    <div class="release_textTitle">
+                        <a href="https://Github.com/EastCation/StaRain-Engine" title="Github页面">星雨引擎</a>
+                        <p>纯Python的Phigros模拟器</p>
+                    </div>
+                </div><div class="col-md-4 release_box">
+                <a href="https://www.bilibili.com/read/cv36510495/" title="Minecaea实机界面"><img src="/statics/starindex/pictures/minecaea.png" class="img-responsive" alt="Responsive image"/>
+                </a>
+                <div class="release_textTitle">
+                    <a href="https://www.bilibili.com/read/cv36510495/" title="Minecaea的b站介绍">Minecaea</a>
+                    <p>什么？这不是Arcaea，这也不是Minecraft！</p>
+                </div>
+            </div>
+                <div class="col-md-4 release_box">
+                    <a href="https://modrinth.com/resourcepack/stupid-mc-translate-chn" title="沙雕翻译包界面"><img src="https://cdn.modrinth.com/data/k4R3Ahua/images/a77dfd01aa6ac21c19046fe439dfd9f67c2a39d8.png" class="img-responsive" alt="Responsive image"/>
+                    </a>
+                    <div class="release_textTitle">
+                        <a href="https://modrinth.com/resourcepack/stupid-mc-translate-chn" title="沙雕翻译包">StupidMC Translate</a>
+                        <p> 沙雕翻译包，对标梗体中文！ </p>
+                    </div>
+                </div>            <div class="col-md-4 release_box">
+            </div>
+            </div>
+        </div>
+
+        <!--news信息-->
+        <div class="row">
+            <div id="news">
+                <div class="news_title">
+                    <img src="/statics/starindex/pictures/star2.png" class="img-responsive star" alt="Responsive image"/><a href="blog.shtml" title=""><span>最新新闻</span><span style="font-size: 0.5em !important;">News</span></a>
+                    <a href="blog.html" class="more" style="font-size:0.9em;float:right;padding-top:20px;" title="">没有更多&gt;&gt;</a>
+                    <img src="/statics/starindex/pictures/heart_line.png" class="img-responsive heart_line" style="padding-bottom:10px;" alt="Responsive image"/>
+                </div>
+                <div class="col-md-4">
+                    <div class="tv_icon">
+                        <a href="https://www.minecraft.net/zh-hans/article/minecraft-beta---preview---1-19-0-20" title="这是一张配图，仅此而已；你还想要什么呢？"> <img src="/statics/starindex/pictures/bg.png" class="img-responsive" alt="Responsive image"/></a>
+                    </div>
+                </div>
+                <div class="col-md-6 news_box">
+
+                    <div data-wow-delay="0.1s" data-wow-duration="600" class="news_menu wow fadeIn">
+                        <span class="glyphicon glyphicon-star"></span>
+                        <a href="https://www.minecraft.net/en-us/article/the-wild-update-out-today-java" target="_blank" title="不是似了">萌雨社进入休眠状态</a><span class="news_time" style="float: right">2024-10-08</span>
+                    </div><div data-wow-delay="0.1s" data-wow-duration="600" class="news_menu wow fadeIn">
+                    <span class="glyphicon glyphicon-star"></span>
+                    <a href="https://eastcation.github.io/Twilight-VI/blogs/202110021.html" target="_blank" title="鸣谢名单">萌雨社/沙雕翻译包演职员表</a><span class="news_time" style="float: right">2021-10-21</span>
+                </div><div data-wow-delay="0.1s" data-wow-duration="600" class="news_menu wow fadeIn">
+                    <span class="glyphicon glyphicon-star"></span>
+                    <a href="00.shtml" target="_blank" title="哈哈，攻击网页的感觉真爽！">糟糕！这条消息被攻击了！</a><span class="news_time" style="float: right">????-??-??</span>
+                </div><div data-wow-delay="0.1s" data-wow-duration="600" class="news_menu wow fadeIn">
+                    <span class="glyphicon glyphicon-star"></span>
+                    <a href="/blog/202203019.html" target="_blank" title="真的有“我的世界网页版！”Minecraft 4K介绍与游玩方法">真的有“我的世界网页版！”Minecraft 4K介绍与游玩方法</a><span class="news_time" style="float: right">2022-03-19</span>
+                </div>            </div>
+            </div>
+
+        </div>
+    </div>
+
+    <link rel="icon" type="image/ico" href="//gravatar.loli.net/avatar/4cc893d113dd74ceca73f9863f2c5446/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+    <!--开源许可-->
+            <div id="footer" class="row">
+                <p>
+                    <br>辉夜萌雨软件开发社，Theme Quadimension by Idk<br />本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可
+                </p>
+            </div>
+</head>
+
+</html>
+
+<body>
+
+</body>
