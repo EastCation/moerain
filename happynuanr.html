@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!--兼容性/你是我的我是你的谁-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/reset.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/index_style.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/animate.css">
+    <link type="text/css" rel="stylesheet" href="statics/starindex/css/news_style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.kde.org/breeze-icons/icons.css">
+    <script type="text/javascript" src="statics/starindex/js/jquery.min.js"></script>
+    <script type="text/javascript" src="statics/starindex/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="statics/starindex/js/wow.js"></script>
+    <script src="statics/starindex/src/js/uikit.min.js"></script>
+    <script src="statics/starindex/src/js/components/sticky.js"></script>
+    <script type="text/javascript">
+
+
+        new WOW().init();
+        $(function(){
+            $(".item:eq(0)").addClass("active")
+
+            var itemlength=$(".item").length;
+            console.log(itemlength);
+
+            for(i=0;i<itemlength;i++){
+                ceshi= '<li data-target="#carousel-example-generic" data-slide-to="'+i+'" ></li>'
+//               alert(ceshi)
+                $(".carousel-indicators").append(ceshi);
+            }
+        })
+
+    </script>
+    <style>
+        .release_box .img-responsive{
+            height: 240px !important;
+            margin: 0 auto;
+        }
+    </style>
+    <div class="row">
+        <nav id="menu" class="navbar navbar-default">
+            <div class="navbar-header">
+                <!--“您知道吗”板块-->
+                <div class="logo">
+                    <br>Hint: <span id="logo"></span>
+                </div>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <script>
+                // 从服务器获取随机提示
+                async function fetchHint() {
+                    const response = await fetch('hints.txt');
+                    const text = await response.text();
+                    const hints = text.split('\n').filter(line => line.trim() !== '');
+                    const randomHint = hints[Math.floor(Math.random() * hints.length)];
+                    document.getElementById('logo').innerText = randomHint;
+                }
+
+                // 每次刷新页面时，重新加载随机提示
+                window.onload = fetchHint;
+            </script>
+            <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav col-md-12 menu">
+
+                    <li><a href="index.html" title="返回首页">首页</a>
+                        <p>Index</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="https://board.moerain.cn" title="萌雨社公告板">公告板</a>
+                        <p>Board</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="https://docs.moerain.cn" title="社开源文档">文档</a>
+                        <p>Docs</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="https://www.nuanr-mxi.com" title="由NuanR_Mxi暖日创建的暖日明曦开发组">NRLT</a>
+                        <p>NRLT</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="dev.html" title="列举了社里正在开发的项目">开发项目</a>
+                        <p>Projects</p>
+                        <span class="line line-bottom"></span>
+                    <li>
+                        <a href="chart.html" title="最新、最热、时下流行！">谱面制作组</a>
+                        <p>Starmoe Specifications</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+                    <li>
+                        <a href="about.html" title="你想要的一切都在这里">关于</a>
+                        <p>About</p>
+                        <span class="line line-bottom"></span>
+                    </li>
+
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <br></br>
+    <br></br>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>萌雨社 - 暖日酱生日快乐！</title>
+    <!-- 链接你的CSS文件 -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- 可以添加萌雨社特有的图标或样式库 -->
+    <link rel="icon" href="mengyu-icon.png" type="image/png">
+</head>
+<body>
+<header>
+    <div class="header-content">
+
+        <font size="5"><i class="icon icon_view-calendar-birthday"></i>暖日酱生日快乐！</font>
+        <p>萌雨社全体成员献上最真挚的祝福</p>
+    </div>
+</header>
+<br>
+<br>
+<main>
+
+    <section class="about-warm-sun">
+        <font size="5">关于暖日酱</font>
+        <p>在萌雨社中，暖日酱以她的温暖和善良赢得了大家的心。今天，我们齐聚一堂，共同庆祝她的特别日子！</p>
+    </section>
+
+
+<footer>
+    <div id="footer" class="row">
+    <p>&copy; 2024 萌雨社. 版权所有.</p>
+    <p>特别感谢：所有为暖日酱生日庆祝做出贡献的萌雨社成员！</p>
+</footer>
+</body>
+</html>
