@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://files.moerain.cn/f/EQTw/81406868.jpg') no-repeat center center;
+    background-size: cover; /* 背景图片覆盖整个屏幕 */
+    filter: blur(45px); /* 应用高斯模糊效果 */
+    z-index: -1;
+}
+
+.countdown-container {
+    position: relative;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.267); /* 半透明背景 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1; /* 确保倒计时在背景之上 */
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#countdown div {
+    margin: 0 10px;
+    text-align: center;
+}
+
+#countdown span {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+}
+
+#countdown div div {
+    font-size: 0.8em;
+    color: #666;
+}
