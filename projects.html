@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目 - 萌雨社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 50%, #1a1f3a 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Aero Glass Effect */
+        .aero-glass {
+            background: rgba(15, 20, 30, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* macOS Style Cards */
+        .mac-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mac-card:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glow Effect */
+        .glow {
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Dock Navigation */
+        .dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 12px;
+            padding: 12px 24px;
+            border-radius: 24px;
+            background: rgba(15, 20, 30, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .dock-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .dock-item:hover {
+            transform: scale(1.2) translateY(-4px);
+            background: rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .dock-item.active {
+            background: rgba(0, 212, 255, 0.3);
+            border-color: rgba(0, 212, 255, 0.6);
+        }
+
+        /* Filter Buttons */
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Project Cards */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: rgba(15, 20, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dock {
+                bottom: 10px;
+                padding: 8px 16px;
+                gap: 8px;
+            }
+            
+            .dock-item {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 aero-glass">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="resources/logo.png" alt="萌雨社Logo" class="w-10 h-10 rounded-lg">
+                    <h1 class="text-xl font-bold gradient-text">萌雨社</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-white hover:text-cyan-400 transition-colors">首页</a>
+                    <a href="projects.html" class="text-white hover:text-cyan-400 transition-colors active">项目</a>
+                    <a href="docs.html" class="text-white hover:text-cyan-400 transition-colors">文档</a>
+                    <a href="about.html" class="text-white hover:text-cyan-400 transition-colors">关于</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="搜索项目..." class="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <section class="pt-32 pb-16">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-6xl font-black gradient-text glow mb-6">我们的项目</h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">探索萌雨社的创意作品，从游戏开发到翻译项目</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="pb-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="game">游戏和软件</button>
+                <button class="filter-btn" data-filter="translation">翻译</button>
+                <button class="filter-btn" data-filter="tool">团队</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="pb-20">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projectsGrid">
+                
+                <!-- Project 1: Starry Engine -->
+                <div class="mac-card project-card p-6 reveal" data-category="game" data-project="starry-engine">
+                    <div class="aspect-video bg-gradient-to-br from-cyan-500/20 to-purple-600/20 rounded-lg mb-6 overflow-hidden">
+                        <img src="resources/StaRain-Engine.png" alt="星雨引擎" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-cyan-400">星雨引擎</h3>
+                        <span class="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full text-sm">游戏</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">纯Python的Phigros模拟器，即将重制。这是一个开源的节奏游戏引擎，支持自定义谱面和多种游戏模式。</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">版本: 2.0 (开发中)</span>
+                        <span class="text-sm text-gray-400">更新: 2024-11-15</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="flex-1 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                            查看详情
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm transition-all">
+                            下载
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 2: Minecaea -->
+                <div class="mac-card project-card p-6 reveal" data-category="game" data-project="minecaea">
+                    <div class="aspect-video bg-gradient-to-br from-green-500/20 to-blue-600/20 rounded-lg mb-6 overflow-hidden">
+                        <img src="resources/minecaea.png" alt="Minecaea" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-green-400">Minecaea</h3>
+                        <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">游戏</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">什么？这不是Arcaea，这也不是Minecraft！独特的音乐游戏与沙盒元素的完美结合。</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">版本: 3.51</span>
+                        <span class="text-sm text-gray-400">更新: 2024-11-12</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="flex-1 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                            查看详情
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm transition-all">
+                            下载
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 3: StupidMC -->
+                <div class="mac-card project-card p-6 reveal" data-category="translation" data-project="stupidmc">
+                    <div class="aspect-video bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-lg mb-6 overflow-hidden">
+                        <img src="resources/stupidmc.png" alt="StupidMC" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-purple-400">StupidMC Series</h3>
+                        <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm">翻译</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">沙雕翻译系列，做最独特的翻译！为Minecraft带来欢乐的中文翻译体验。</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">版本: 1.21.4</span>
+                        <span class="text-sm text-gray-400">更新: 2024-10-08</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="flex-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                            查看详情
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm transition-all">
+                            下载
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 4: NRLT -->
+                <div class="mac-card project-card p-6 reveal" data-category="tool" data-project="nrlt">
+                    <div class="aspect-video bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-lg mb-6 overflow-hidden">
+                        <img src="/resources/dev.png" alt="NSCT" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-orange-400">NSCT</h3>
+                        <span class="bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full text-sm">团队</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">暖日明曦开发组，负责开发音游以及一些小项目的团队。</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">规模：2人</span>
+                        <span class="text-sm text-gray-400">上次更新: 2024-10-25</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="flex-1 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                            查看详情
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm transition-all">
+                            存储库
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 5: Phigros Simulator -->
+                <div class="mac-card project-card p-6 reveal" data-category="game" data-project="phigros-sim">
+                    <div class="aspect-video bg-gradient-to-br from-indigo-500/20 to-purple-600/20 rounded-lg mb-6 overflow-hidden">
+                        <img src="/resources/javaows.png" alt="Phigros Simulator" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-indigo-400">JavaOWS</h3>
+                        <span class="bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-sm">工具</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">基于Java的Shell壳软件，内置很多常用软件以及工具。</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">版本: 1.5</span>
+                        <span class="text-sm text-gray-400">更新: 2025-09-15</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                            查看详情
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm transition-all">
+                            存储库
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project 6: Starmoe Specifications -->
+                <div class="mac-card project-card p-6 reveal" data-category="tool" data-project="specifications">
+                    <div class="aspect-video bg-gradient-to-br from-teal-500/20 to-cyan-600/20 rounded-lg mb-6 overflow-hidden">
+                        <img src="/resources/starmoe-specifications.jpg" alt="谱面制作组" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-teal-400">谱面制作组</h3>
+                        <span class="bg-teal-500/20 text-teal-400 px-3 py-1 rounded-full text-sm">团队</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">Starmoe Specifications，一个MIDI和音游谱面兴趣组</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-400">规模：2人</span>
+                        <span class="text-sm text-gray-400">上次更新: 2024-11-01</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="flex-1 bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                            查看详情
+                        </button>
+                        <button class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm transition-all">
+                            下载
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Detail Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold gradient-text" id="modalTitle">项目详情</h2>
+                <button class="text-gray-400 hover:text-white text-2xl" id="closeModal">&times;</button>
+            </div>
+            <div id="modalContent">
+                <!-- 动态内容将在这里加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 relative">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-4 mb-6">
+                <img src="resources/logo.png" alt="萌雨社Logo" class="w-8 h-8 rounded">
+                <span class="text-lg font-semibold gradient-text">萌雨社</span>
+            </div>
+            <p class="text-gray-400 mb-4">辉夜萌雨软件开发社 / 暖日明曦开发团队</p>
+            <p class="text-gray-500 text-sm">
+                © 2024 萌雨社. 本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可
+            </p>
+        </div>
+    </footer>
+
+    <!-- Dock Navigation -->
+    <nav class="dock">
+        <a href="index.html" class="dock-item" title="首页">🏠</a>
+        <a href="projects.html" class="dock-item active" title="项目">🎮</a>
+        <a href="docs.html" class="dock-item" title="文档">📚</a>
+        <a href="about.html" class="dock-item" title="关于">👥</a>
+    </nav>
+
+    <script src="main.js"></script>
+    <script>
+        // 项目页面特定功能
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProjectFilter();
+            initializeProjectModal();
+            initializeProjectSearch();
+        });
+
+        // 项目筛选功能
+        function initializeProjectFilter() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 更新按钮状态
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // 筛选项目
+                    projectCards.forEach(card => {
+                        const category = card.getAttribute('data-category');
+                        
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'block';
+                            anime({
+                                targets: card,
+                                opacity: [0, 1],
+                                scale: [0.9, 1],
+                                duration: 300,
+                                easing: 'easeOutCubic',
+                                delay: Math.random() * 100
+                            });
+                        } else {
+                            anime({
+                                targets: card,
+                                opacity: [1, 0],
+                                scale: [1, 0.9],
+                                duration: 300,
+                                easing: 'easeOutCubic',
+                                complete: () => {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        }
+
+        // 项目模态框
+        function initializeProjectModal() {
+            const modal = document.getElementById('projectModal');
+            const closeModal = document.getElementById('closeModal');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            // 项目详情数据
+            const projectDetails = {
+                'starry-engine': {
+                    title: '星雨引擎',
+                    description: '纯Python开发的Phigros模拟器，支持自定义谱面和多种游戏模式。',
+                    features: [
+                        '纯Python实现，跨平台支持',
+                        '支持多种谱面格式',
+                        '自定义皮肤和主题',
+                        '实时音频同步',
+                        '多难度支持'
+                    ],
+                    changelog: [
+                        'v2.0 (开发中) - 全新UI界面，性能优化',
+                        'v1.5 - 新增自定义皮肤功能',
+                        'v1.0 - 初始版本发布'
+                    ]
+                },
+                'minecaea': {
+                    title: 'Minecaea',
+                    description: '将Minecraft与Arcaea完美结合的独特音乐游戏体验。',
+                    features: [
+                        'Minecraft风格的音乐游戏',
+                        '原创谱面和音乐',
+                        '沙盒建造元素',
+                        '多人游戏支持',
+                        '自定义地图编辑器'
+                    ],
+                    changelog: [
+                        'v3.51 - 白犬酱角色加入',
+                        'v3.0 - 全新游戏机制',
+                        'v2.0 - 多人模式上线'
+                    ]
+                },
+                'stupidmc': {
+                    title: 'StupidMC Series',
+                    description: '独特的沙雕翻译系列，为Minecraft带来欢乐的中文体验。',
+                    features: [
+                        '创意翻译内容',
+                        '幽默的语言风格',
+                        '完整的本地化支持',
+                        '定期更新',
+                        '社区互动'
+                    ],
+                    changelog: [
+                        'v1.21.4 - 最新版本发布',
+                        'v1.21 - 新增大量翻译内容',
+                        'v1.20 - 初始版本发布'
+                    ]
+                }
+            };
+
+            projectCards.forEach(card => {
+                const detailBtn = card.querySelector('button');
+                if (detailBtn) {
+                    detailBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const projectId = card.getAttribute('data-project');
+                        const project = projectDetails[projectId];
+                        
+                        if (project) {
+                            showProjectModal(project);
+                        }
+                    });
+                }
+            });
+
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        }
+
+        function showProjectModal(project) {
+            const modal = document.getElementById('projectModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            modalTitle.textContent = project.title;
+            
+            modalContent.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-400">项目介绍</h3>
+                    <p class="text-gray-300 leading-relaxed">${project.description}</p>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-400">主要特性</h3>
+                    <ul class="space-y-2">
+                        ${project.features.map(feature => `
+                            <li class="flex items-center space-x-2">
+                                <span class="text-cyan-400">•</span>
+                                <span class="text-gray-300">${feature}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-400">更新日志</h3>
+                    <ul class="space-y-2">
+                        ${project.changelog.map(log => `
+                            <li class="flex items-start space-x-2">
+                                <span class="text-purple-400 mt-1">•</span>
+                                <span class="text-gray-300">${log}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button class="flex-1 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 px-6 py-3 rounded-lg font-semibold transition-all">
+                        下载项目
+                    </button>
+                    <button class="flex-1 bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-3 rounded-lg font-semibold transition-all">
+                        查看文档
+                    </button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // 项目搜索功能
+        function initializeProjectSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                projectCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        anime({
+                            targets: card,
+                            opacity: [0, 1],
+                            scale: [0.9, 1],
+                            duration: 300,
+                            easing: 'easeOutCubic'
+                        });
+                    } else {
+                        anime({
+                            targets: card,
+                            opacity: [1, 0],
+                            scale: [1, 0.9],
+                            duration: 300,
+                            easing: 'easeOutCubic',
+                            complete: () => {
+                                card.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

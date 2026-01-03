@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档 - 萌雨社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 50%, #1a1f3a 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Aero Glass Effect */
+        .aero-glass {
+            background: rgba(15, 20, 30, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* macOS Style Cards */
+        .mac-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #00d4ff 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Dock Navigation */
+        .dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 12px;
+            padding: 12px 24px;
+            border-radius: 24px;
+            background: rgba(15, 20, 30, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .dock-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        .dock-item:hover {
+            transform: scale(1.2) translateY(-4px);
+            background: rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .dock-item.active {
+            background: rgba(0, 212, 255, 0.3);
+            border-color: rgba(0, 212, 255, 0.6);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 80px);
+            background: rgba(15, 20, 30, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-left-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .sidebar-item.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-left-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .sidebar-category {
+            padding: 8px 20px;
+            font-weight: 600;
+            color: #8b5cf6;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 100px 40px 40px;
+            min-height: 100vh;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .code-block code {
+            color: #e2e8f0;
+        }
+
+        /* Documentation Content */
+        .doc-content h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .doc-content h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem;
+            color: #8b5cf6;
+        }
+
+        .doc-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+            color: #00d4ff;
+        }
+
+        .doc-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+        }
+
+        .doc-content ul, .doc-content ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        .doc-content li {
+            margin-bottom: 0.5rem;
+            color: #e2e8f0;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc h3 {
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        .toc a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #00d4ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 100px 20px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dock {
+                bottom: 10px;
+                padding: 8px 16px;
+                gap: 8px;
+            }
+            
+            .dock-item {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 200;
+            background: rgba(15, 20, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"></path>
+        </svg>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 aero-glass">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="resources/logo.png" alt="萌雨社Logo" class="w-10 h-10 rounded-lg">
+                    <h1 class="text-xl font-bold gradient-text">萌雨社</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-white hover:text-cyan-400 transition-colors">首页</a>
+                    <a href="projects.html" class="text-white hover:text-cyan-400 transition-colors">项目</a>
+                    <a href="docs.html" class="text-white hover:text-cyan-400 transition-colors active">文档</a>
+                    <a href="about.html" class="text-white hover:text-cyan-400 transition-colors">关于</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="搜索文档..." class="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-cyan-400 transition-colors">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="p-4">
+            <div class="sidebar-category">快速开始</div>
+            <div class="sidebar-item active" data-doc="getting-started">快速开始</div>
+            <div class="sidebar-item" data-doc="installation">安装指南</div>
+            
+            <div class="sidebar-category">开发指南</div>
+            <div class="sidebar-item" data-doc="api-reference">API参考</div>
+            <div class="sidebar-item" data-doc="game-development">游戏开发</div>
+            <div class="sidebar-item" data-doc="translation-guide">翻译指南</div>
+            
+            <div class="sidebar-category">项目文档</div>
+            <div class="sidebar-item" data-doc="starry-engine">星雨引擎</div>
+            <div class="sidebar-item" data-doc="minecaea">Minecaea</div>
+            <div class="sidebar-item" data-doc="stupidmc">StupidMC</div>
+            
+            <div class="sidebar-category">参考</div>
+            <div class="sidebar-item" data-doc="faq">常见问题</div>
+            <div class="sidebar-item" data-doc="changelog">更新日志</div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="doc-content" id="docContent">
+            <!-- 动态内容将在这里加载 -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 relative">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-4 mb-6">
+                <img src="resources/logo.png" alt="萌雨社Logo" class="w-8 h-8 rounded">
+                <span class="text-lg font-semibold gradient-text">萌雨社</span>
+            </div>
+            <p class="text-gray-400 mb-4">辉夜萌雨软件开发社 / 暖日明曦开发团队</p>
+            <p class="text-gray-500 text-sm">
+                © 2024 萌雨社. 本作品采用知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议进行许可
+            </p>
+        </div>
+    </footer>
+
+    <!-- Dock Navigation -->
+    <nav class="dock">
+        <a href="index.html" class="dock-item" title="首页">🏠</a>
+        <a href="projects.html" class="dock-item" title="项目">🎮</a>
+        <a href="docs.html" class="dock-item active" title="文档">📚</a>
+        <a href="about.html" class="dock-item" title="关于">👥</a>
+    </nav>
+
+    <script src="main.js"></script>
+    <script>
+        // 文档页面特定功能
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDocNavigation();
+            initializeMobileMenu();
+            loadDocContent('getting-started');
+        });
+
+        // 文档数据
+        const docData = {
+            'getting-started': {
+                title: '快速开始',
+                content: `
+                    <h1>快速开始</h1>
+                    <p>欢迎使用萌雨社的开发文档！这里包含了所有项目的详细文档和使用指南。</p>
+                    
+                    <div class="toc">
+                        <h3>目录</h3>
+                        <ul>
+                            <li><a href="#introduction">简介</a></li>
+                            <li><a href="#prerequisites">前置要求</a></li>
+                            <li><a href="#first-project">创建第一个项目</a></li>
+                        </ul>
+                    </div>
+                    
+                    <h2 id="introduction">简介</h2>
+                    <p>萌雨社是一个专注于游戏开发和翻译的创意团队。我们致力于创建有趣、创新的软件项目，并为社区提供优质的开发资源。</p>
+                    
+                    <h2 id="prerequisites">前置要求</h2>
+                    <p>在开始之前，请确保您的开发环境满足以下要求：</p>
+                    <ul>
+                        <li>Python 3.8 或更高版本</li>
+                        <li>Git 版本控制系统</li>
+                        <li>代码编辑器（推荐使用 VS Code）</li>
+                        <li>基本的编程知识</li>
+                    </ul>
+                    
+                    <h2 id="first-project">创建第一个项目</h2>
+                    <p>让我们从创建您的第一个萌雨社项目开始：</p>
+                    
+                    <div class="code-block">
+                        <code>
+# 克隆项目模板<br>
+git clone https://github.com/moerain/project-template.git<br>
+cd project-template<br><br>
+
+# 安装依赖<br>
+pip install -r requirements.txt<br><br>
+
+# 运行项目<br>
+python main.py
+                        </code>
+                    </div>
+                    
+                    <p>恭喜！您已经成功运行了第一个萌雨社项目。接下来可以查看具体的项目文档来了解更多功能。</p>
+                `
+            },
+            'installation': {
+                title: '安装指南',
+                content: `
+                    <h1>安装指南</h1>
+                    <p>本指南将帮助您安装和配置萌雨社的开发环境。</p>
+                    
+                    <h2>环境要求</h2>
+                    <ul>
+                        <li>操作系统：Windows 10/11, macOS 10.15+, Linux</li>
+                        <li>Python：3.8+</li>
+                        <li>内存：至少 4GB RAM</li>
+                        <li>存储：至少 2GB 可用空间</li>
+                    </ul>
+                    
+                    <h2>安装步骤</h2>
+                    <h3>1. 安装 Python</h3>
+                    <p>访问 Python 官网下载并安装最新版本：</p>
+                    <div class="code-block">
+                        <code>https://www.python.org/downloads/</code>
+                    </div>
+                    
+                    <h3>2. 安装 Git</h3>
+                    <p>下载并安装 Git 版本控制系统：</p>
+                    <div class="code-block">
+                        <code>https://git-scm.com/downloads</code>
+                    </div>
+                    
+                    <h3>3. 克隆项目</h3>
+                    <div class="code-block">
+                        <code>
+git clone https://github.com/moerain/projects.git<br>
+cd projects
+                        </code>
+                    </div>
+                `
+            },
+            'starry-engine': {
+                title: '星雨引擎文档',
+                content: `
+                    <h1>星雨引擎</h1>
+                    <p>纯Python开发的Phigros模拟器，支持自定义谱面和多种游戏模式。</p>
+                    
+                    <h2>特性</h2>
+                    <ul>
+                        <li>纯Python实现，跨平台支持</li>
+                        <li>支持多种谱面格式</li>
+                        <li>自定义皮肤和主题</li>
+                        <li>实时音频同步</li>
+                        <li>多难度支持</li>
+                    </ul>
+                    
+                    <h2>快速开始</h2>
+                    <div class="code-block">
+                        <code>
+from starry_engine import GameEngine<br><br>
+
+# 创建游戏实例<br>
+game = GameEngine()<br><br>
+
+# 加载谱面<br>
+game.load_chart('path/to/chart.json')<br><br>
+
+# 开始游戏<br>
+game.start()
+                        </code>
+                    </div>
+                `
+            },
+            'faq': {
+                title: '常见问题',
+                content: `
+                    <h1>常见问题</h1>
+                    
+                    <h2>一般问题</h2>
+                    <h3>Q: 如何加入萌雨社？</h3>
+                    <p>A: 您可以通过我们的QQ群（484023249）或发送邮件至 starmoe@moerain.cn 联系我们。</p>
+                    
+                    <h3>Q: 项目是否开源？</h3>
+                    <p>A: 大部分项目都是开源的，您可以在我们的GitHub页面查看源代码。</p>
+                    
+                    <h2>技术问题</h2>
+                    <h3>Q: 遇到安装问题怎么办？</h3>
+                    <p>A: 请确保您的Python版本符合要求，并检查是否正确安装了所有依赖包。</p>
+                    
+                    <h3>Q: 如何报告bug？</h3>
+                    <p>A: 请在相应项目的GitHub页面提交issue，详细描述您遇到的问题。</p>
+                `
+            }
+        };
+
+        // 初始化文档导航
+        function initializeDocNavigation() {
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // 更新活跃状态
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 加载对应文档
+                    const docId = this.getAttribute('data-doc');
+                    loadDocContent(docId);
+                });
+            });
+        }
+
+        // 加载文档内容
+        function loadDocContent(docId) {
+            const docContent = document.getElementById('docContent');
+            const doc = docData[docId];
+            
+            if (doc) {
+                docContent.innerHTML = doc.content;
+                
+                // 添加动画效果
+                anime({
+                    targets: docContent,
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 500,
+                    easing: 'easeOutCubic'
+                });
+            } else {
+                docContent.innerHTML = `
+                    <h1>文档建设中</h1>
+                    <p>抱歉，该文档正在建设中，请稍后再来查看。</p>
+                    <p>如有疑问，请联系我们的开发团队。</p>
+                `;
+            }
+        }
+
+        // 初始化移动端菜单
+        function initializeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+            
+            // 点击外部关闭菜单
+            document.addEventListener('click', function(e) {
+                if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
